@@ -17,6 +17,9 @@ const Resume = forwardRef((props, ref) => {
   const containerRef = useRef();
 
   const [columns, setColumns] = useState([[], []]);
+  
+  // For drag and drop property, we need two states : source & target
+  // and we will swap both of them.
   const [source, setSource] = useState("");
   const [target, seTarget] = useState("");
 
@@ -41,10 +44,14 @@ const Resume = forwardRef((props, ref) => {
     [sections.workExp]: (
       <div
         key={"workexp"}
-        draggable
-        onDragOver={() => seTarget(info.workExp?.id)}
-        onDragEnd={() => setSource(info.workExp?.id)}
+
+        draggable // For drag and drop
+        onDragOver={() => seTarget(info.workExp?.id)} // target for drag and drop
+        onDragEnd={() => setSource(info.workExp?.id)} // source for drag and drop
+
         className={`${styles.section} ${
+          // If we want to remove a section from resume. For Ex - workExp or summary or other ....etc.
+          // below lines of code is there for that
           info.workExp?.sectionTitle ? "" : styles.hidden
         }`}
       >
@@ -108,6 +115,8 @@ const Resume = forwardRef((props, ref) => {
         onDragOver={() => seTarget(info.project?.id)}
         onDragEnd={() => setSource(info.project?.id)}
         className={`${styles.section} ${
+          // If we want to remove a section from resume. For Ex - workExp or summary or other ....etc.
+          // below lines of code is there for that
           info.project?.sectionTitle ? "" : styles.hidden
         }`}
       >
@@ -164,6 +173,8 @@ const Resume = forwardRef((props, ref) => {
         onDragOver={() => seTarget(info.education?.id)}
         onDragEnd={() => setSource(info.education?.id)}
         className={`${styles.section} ${
+          // If we want to remove a section from resume. For Ex - workExp or summary or other ....etc.
+          // below lines of code is there for that
           info.education?.sectionTitle ? "" : styles.hidden
         }`}
       >
@@ -203,6 +214,8 @@ const Resume = forwardRef((props, ref) => {
         onDragOver={() => seTarget(info.achievement?.id)}
         onDragEnd={() => setSource(info.achievement?.id)}
         className={`${styles.section} ${
+          // If we want to remove a section from resume. For Ex - workExp or summary or other ....etc.
+          // below lines of code is there for that
           info.achievement?.sectionTitle ? "" : styles.hidden
         }`}
       >
@@ -231,6 +244,8 @@ const Resume = forwardRef((props, ref) => {
         onDragOver={() => seTarget(info.summary?.id)}
         onDragEnd={() => setSource(info.summary?.id)}
         className={`${styles.section} ${
+          // If we want to remove a section from resume. For Ex - workExp or summary or other ....etc.
+          // below lines of code is there for that
           info.summary?.sectionTitle ? "" : styles.hidden
         }`}
       >
@@ -247,6 +262,8 @@ const Resume = forwardRef((props, ref) => {
         onDragOver={() => seTarget(info.other?.id)}
         onDragEnd={() => setSource(info.other?.id)}
         className={`${styles.section} ${
+          // If we want to remove a section from resume. For Ex - workExp or summary or other ....etc.
+          // below lines of code is there for that
           info.other?.sectionTitle ? "" : styles.hidden
         }`}
       >
@@ -258,6 +275,7 @@ const Resume = forwardRef((props, ref) => {
     ),
   };
 
+  // Swaps Source and Target
   const swapSourceTarget = (source, target) => {
     if (!source || !target) return;
     const tempColumns = [[...columns[0]], [...columns[1]]];
@@ -276,15 +294,16 @@ const Resume = forwardRef((props, ref) => {
       targetRowIndex = tempColumns[1].findIndex((item) => item === target);
     }
 
+    // swapping
     const tempSource = tempColumns[sourceColumnIndex][sourceRowIndex];
-    tempColumns[sourceColumnIndex][sourceRowIndex] =
-      tempColumns[targetColumnIndex][targetRowIndex];
-
+    tempColumns[sourceColumnIndex][sourceRowIndex] = tempColumns[targetColumnIndex][targetRowIndex];
     tempColumns[targetColumnIndex][targetRowIndex] = tempSource;
 
     setColumns(tempColumns);
   };
 
+  // The resume body will be divided into 2 columns
+  // for each column there will be 3 parts
   useEffect(() => {
     setColumns([
       [sections.project, sections.education, sections.summary],
@@ -292,14 +311,17 @@ const Resume = forwardRef((props, ref) => {
     ]);
   }, []);
 
+  // this useEffect is used for swapping source & target useful for Drag and Drop functionality
   useEffect(() => {
     swapSourceTarget(source, target);
   }, [source]);
 
+  // useEffect helps to change colors
   useEffect(() => {
     const container = containerRef.current;
     if (!props.activeColor || !container) return;
 
+    // change color
     container.style.setProperty("--color", props.activeColor);
   }, [props.activeColor]);
 

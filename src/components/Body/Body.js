@@ -1,4 +1,6 @@
 import React, { useRef, useState } from "react";
+
+// for printing resume
 import ReactToPrint from "react-to-print";
 import { ArrowDown } from "react-feather";
 
@@ -19,8 +21,10 @@ function Body() {
     other: "Other",
   };
   const resumeRef = useRef();
-
+ 
+  // for switching colors
   const [activeColor, setActiveColor] = useState(colors[0]);
+
   const [resumeInformation, setResumeInformation] = useState({
     [sections.basicInfo]: {
       id: sections.basicInfo,
@@ -68,6 +72,8 @@ function Body() {
             <span
               key={item}
               style={{ backgroundColor: item }}
+
+              // switching between colors
               className={`${styles.color} ${
                 activeColor === item ? styles.active : ""
               }`}
@@ -75,7 +81,7 @@ function Body() {
             />
           ))}
         </div>
-        <ReactToPrint
+        <ReactToPrint // for printing(download) resume
           trigger={() => {
             return (
               <button>

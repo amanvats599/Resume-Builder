@@ -31,9 +31,13 @@
   width: 36px;
   border-radius: 50%;
   background-color: #239ce2;
+  cursor: pointer;
 }
+
+/*  switching colors */
 .colors .active {
   border: 2px solid #000;
+  
 }
 
 .toolbar button {
